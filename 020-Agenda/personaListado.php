@@ -5,10 +5,11 @@
 
     $sql = "
                SELECT
-                    p.id     AS pId,
-                    p.nombre AS pNombre,
-                    c.id     AS cId,
-                    c.nombre AS cNombre
+                    p.id        AS pId,
+                    p.nombre    AS pNombre,
+                    p.apellidos AS pApellidos,
+                    c.id        AS cId,
+                    c.nombre    AS cNombre
                 FROM
                    persona AS p INNER JOIN categoria AS c
                    ON p.categoriaId = c.id
@@ -43,14 +44,16 @@
     <tr>
         <th>Nombre</th>
         <th>Categoría</th>
+        <th>Apellidos</th>
     </tr>
 
     <?php
     foreach ($rs as $fila) { ?>
         <tr>
-            <td><a href=   'personaFicha.php?id=<?=$fila["pId"]?>'> <?= $fila["pNombre"] ?> </a></td>
-            <td><a href= 'categoriaFicha.php?id=<?=$fila["cId"]?>'> <?= $fila["cNombre"] ?> </a></td>
-            <td><a href='personaEliminar.php?id=<?=$fila["pId"]?>'> (X)                      </a></td>
+            <td><a href=   'personaFicha.php?id=<?=$fila["pId"]?>'> <?= $fila["pNombre"]    ?> </a></td>
+            <td><a href= 'categoriaFicha.php?id=<?=$fila["cId"]?>'> <?= $fila["cNombre"]    ?> </a></td>
+            <td><a href=   'personaFicha.php?id=<?=$fila["pId"]?>'> <?= $fila["pApellidos"] ?> </a></td>
+            <td><a href='personaEliminar.php?id=<?=$fila["pId"]?>'> (X)                        </a></td>
         </tr>
     <?php } ?>
 

@@ -13,10 +13,11 @@
 	
 	if ($nuevaEntrada) { // Quieren CREAR una nueva entrada, así que no se cargan datos.
 		$personaNombre = "<introduzca nombre>";
+        $personaApellidos = "<introduzca apellidos>";
 		$personaTelefono = "<introduzca teléfono>";
-		$personaCategoriaId = 0;
-	} else { // Quieren VER la ficha de una persona existente, cuyos datos se cargan.
-		$sqlPersona = "SELECT nombre, telefono, categoriaId FROM persona WHERE id=?";
+        $personaCategoriaId = 0;
+    } else { // Quieren VER la ficha de una persona existente, cuyos datos se cargan.
+		$sqlPersona = "SELECT nombre, apellidos, telefono, categoriaId FROM persona WHERE id=?";
 
         $select = $conexion->prepare($sqlPersona);
         $select->execute([$id]); // Se añade el parámetro a la consulta preparada.
@@ -24,9 +25,10 @@
 
         // Con esto, accedemos a los datos de la primera (y esperemos que única) fila que haya venido.
 		$personaNombre = $rsPersona[0]["nombre"];
+        $personaApellidos = $rsPersona[0]["apellidos"];
 		$personaTelefono = $rsPersona[0]["telefono"];
 		$personaCategoriaId = $rsPersona[0]["categoriaId"];
-	}
+    }
 
 	
 	
@@ -42,6 +44,7 @@
 
     // INTERFAZ:
     // personaNombre
+    // personaApellidos
     // personaTelefono
     // personaCategoriaId
     // rsCategorias
@@ -74,6 +77,12 @@
 		<strong>Nombre: </strong>
 		<input type='text' name='nombre' value='<?=$personaNombre ?>' />
 	</li>
+
+    <li>
+        <strong> Apellidos: </strong>
+        <input type='text' name='apellidos' value='<?=$personaApellidos ?>' />
+
+    </li>
 	
 	<li>
 		<strong>Teléfono: </strong>
@@ -95,8 +104,18 @@
 
 					// Alternativa (peor):
                     // if ($categoriaId == $personaCategoriaId) echo "<option value='$categoriaId' selected='true'>$categoriaNombre</option>";
-                    // else                                     echo "<option value='$categoriaId'                >$categoriaNombre</option>";
+                    // else
+                    //                                    echo "<option value='$categoriaId'                >$categoriaNombre</option>";
 				}
+                //<form action="/action_page.php">
+            //  <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+            //  <label for="vehicle1"> I have a bike</label><br>
+            //  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+            //  <label for="vehicle2"> I have a car</label><br>
+            //  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+            //  <label for="vehicle3"> I have a boat</label><br><br>
+            //  <input type="submit" value="Submit">
+            //</form>
 			?>
 		</select>
 	</li>
