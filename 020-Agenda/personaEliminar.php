@@ -1,5 +1,5 @@
 <?php
-	require_once "_varios.php";
+	require_once "_Varios.php";
 
 	$conexion = obtenerPdoConexionBD();
 
@@ -52,7 +52,7 @@
 
 <?php } ?>
 
-<a href='personaListado.php'>Volver al listado de personas.</a>
+<a href='PersonaListado.php'>Volver al listado de personas.</a>
 
 </body>
 

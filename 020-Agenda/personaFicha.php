@@ -1,5 +1,5 @@
 <?php
-	require_once "_varios.php";
+	require_once "_Varios.php";
 
 	$conexion = obtenerPdoConexionBD();
 	
@@ -15,9 +15,10 @@
 		$personaNombre = "<introduzca nombre>";
         $personaApellidos = "<introduzca apellidos>";
 		$personaTelefono = "<introduzca teléfono>";
-        $personaCategoriaId = 0;
-    } else { // Quieren VER la ficha de una persona existente, cuyos datos se cargan.
-		$sqlPersona = "SELECT nombre, apellidos, telefono, categoriaId FROM persona WHERE id=?";
+        $personaEstrella = false;
+		$personaCategoriaId = 0;
+	} else { // Quieren VER la ficha de una persona existente, cuyos datos se cargan.
+        $sqlPersona = "SELECT * FROM persona WHERE id=?";
 
         $select = $conexion->prepare($sqlPersona);
         $select->execute([$id]); // Se añade el parámetro a la consulta preparada.
@@ -27,8 +28,9 @@
 		$personaNombre = $rsPersona[0]["nombre"];
         $personaApellidos = $rsPersona[0]["apellidos"];
 		$personaTelefono = $rsPersona[0]["telefono"];
+        $personaEstrella = ($rsPersona[0]["estrella"] == 1); // En BD está como TINYINT. 0=false, 1=true. Con esto convertimos a booolean.
 		$personaCategoriaId = $rsPersona[0]["categoriaId"];
-    }
+	}
 
 	
 	
@@ -43,12 +45,14 @@
 
 
     // INTERFAZ:
-    // personaNombre
-    // personaApellidos
-    // personaTelefono
-    // personaCategoriaId
-    // rsCategorias
+    // $personaNombre
+    // $personaTelefono
+    // $personaApellidos
+    // $personaEstrella
+    // $personaCategoriaId
+    // $rsCategorias
 ?>
+
 
 
 
@@ -68,58 +72,47 @@
 	<h1>Ficha de persona</h1>
 <?php } ?>
 
-<form method='post' action='personaGuardar.php'>
+<form method='post' action='PersonaGuardar.php'>
 
 <input type='hidden' name='id' value='<?= $id ?>' />
 
-<ul>
-	<li>
-		<strong>Nombre: </strong>
-		<input type='text' name='nombre' value='<?=$personaNombre ?>' />
-	</li>
+    <label for='nombre'>Nombre</label>
+    <input type='text' name='nombre' value='<?=$personaNombre ?>' />
+    <br/>
 
-    <li>
-        <strong> Apellidos: </strong>
-        <input type='text' name='apellidos' value='<?=$personaApellidos ?>' />
+    <label for='apellidos'> Apellidos</label>
+    <input type='text' name='apellidos' value='<?=$personaApellidos ?>' />
+    <br/>
 
-    </li>
-	
-	<li>
-		<strong>Teléfono: </strong>
-		<input type='text' name='telefono' value='<?=$personaTelefono ?>' />
-	</li>
-		
-	<li>
-		<strong>Categoría: </strong>
-		<select name='categoriaId'>
-			<?php
-                foreach ($rsCategorias as $filaCategoria) {
-					$categoriaId = (int) $filaCategoria["id"];
-					$categoriaNombre = $filaCategoria["nombre"];
-					
-					if ($categoriaId == $personaCategoriaId) $seleccion = "selected='true'";
-					else                                     $seleccion = "";
-					
-					echo "<option value='$categoriaId' $seleccion>$categoriaNombre</option>";
+    <label for='telefono'> Teléfono</label>
+    <input type='text' name='telefono' value='<?=$personaTelefono ?>' />
+    <br/>
 
-					// Alternativa (peor):
-                    // if ($categoriaId == $personaCategoriaId) echo "<option value='$categoriaId' selected='true'>$categoriaNombre</option>";
-                    // else
-                    //                                    echo "<option value='$categoriaId'                >$categoriaNombre</option>";
-				}
-                //<form action="/action_page.php">
-            //  <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-            //  <label for="vehicle1"> I have a bike</label><br>
-            //  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-            //  <label for="vehicle2"> I have a car</label><br>
-            //  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-            //  <label for="vehicle3"> I have a boat</label><br><br>
-            //  <input type="submit" value="Submit">
-            //</form>
-			?>
-		</select>
-	</li>
-</ul>
+    <label for='categoriaId'>Categoría</label>
+    <select name='categoriaId'>
+        <?php
+            foreach ($rsCategorias as $filaCategoria) {
+                $categoriaId = (int) $filaCategoria["id"];
+                $categoriaNombre = $filaCategoria["nombre"];
+
+                if ($categoriaId == $personaCategoriaId) $seleccion = "selected='true'";
+                else                                     $seleccion = "";
+
+                echo "<option value='$categoriaId' $seleccion>$categoriaNombre</option>";
+
+                // Alternativa (peor):
+                // if ($categoriaId == $personaCategoriaId) echo "<option value='$categoriaId' selected='true'>$categoriaNombre</option>";
+                // else                                     echo "<option value='$categoriaId'                >$categoriaNombre</option>";
+            }
+        ?>
+    </select>
+    <br/>
+
+    <label for='estrella'>Estrellado</label>
+    <input type='checkbox' name='estrella' <?= $personaEstrella ? "checked" : "" ?> />
+    <br/>
+
+    <br/>
 
 <?php if ($nuevaEntrada) { ?>
 	<input type='submit' name='crear' value='Crear persona' />
@@ -129,16 +122,15 @@
 
 </form>
 
-<br />
-
 <?php if (!$nuevaEntrada) { ?>
-	<a href='personaEliminar.php?id=<?=$id ?>'>Eliminar persona</a>
+    <br />
+    <a href='PersonaEliminar.php?id=<?=$id ?>'>Eliminar persona</a>
 <?php } ?>
 
 <br />
 <br />
 
-<a href='personaListado.php'>Volver al listado de personas.</a>
+<a href='PersonaListado.php'>Volver al listado de personas.</a>
 
 </body>
 
