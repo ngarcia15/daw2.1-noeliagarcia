@@ -11,6 +11,9 @@
         unset($_SESSION["soloEstrellas"]);
     }
 
+    if ($_SESSION["tema"]=="noche")
+        echo '<link href="estilosPhp.css" type="text/css" rel="stylesheet">';
+
     $posibleClausulaWhere = isset($_SESSION["soloEstrellas"]) ? "WHERE p.estrella=1" : "";
 
     $sql = "
@@ -100,6 +103,8 @@
 <br />
 
 <a href='CategoriaListado.php'>Gestionar listado de Categorías</a>
+<a href='cambiarTema.php'>Cambiar tema</a>
+
 
 </body>
 
