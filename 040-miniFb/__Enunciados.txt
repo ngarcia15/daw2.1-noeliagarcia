@@ -1,0 +1,18 @@
+GRUPO .1 y .2 PARA MIÉRCOLES.
+
+Orden sugerido:
+1: Formulario inicio sesión.
+2: Que seamos capaces de cargar Contenido Priv 1 (porque iniciamos sesión bien).
+    (primera vez: cargar a capón en la sesión los datos para que "parezca" que hay sesión iniciada.)
+3: Que ContPriv1 compruebe sesión y, si entra bien, que muestre arriba los datos del usu logueado, y un link para cerrar sesión.
+4: SesionCerrar.php
+5: Incoroporar comprobación real efectiva contra BD en el SesionInicioComprobar.php/_Varios.php
+6: ContPub1 (mostrar info y eso)
+
+7: Opcional: HASH y SAL
+
+
+Extras (grupo .1):
+Bis 1: Crear cuenta de usuario (OJO con identificadores repetidos...)
+Bis 2: Ver/modificar mi cuenta de usuario
+Bis 3: Subir foto perfil
