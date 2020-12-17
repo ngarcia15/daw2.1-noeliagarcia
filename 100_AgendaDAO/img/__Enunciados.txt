@@ -1,0 +1,11 @@
+PARA PRÓXIMO DÍA:
+
+Objetivo: adaptar categoriasListado.php al modelo DAO.
+
+Copiar todo lo necesario de mi solución de agenda, y de 990_TiendaCursoPasado.
+
+Amoldar productoObtenerTodos() --> categoriaObtenerTodas()
+
+Crear clase Categoria.
+
+Y que funcione ese PHP con este modelo.

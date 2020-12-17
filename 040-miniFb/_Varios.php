@@ -80,6 +80,36 @@ function cerrarSesion()
     session_destroy();
 
 }
+function establecerCookieRecuerdame(array $arrayUsuario)
+{
+    // TODO Enviamos al cliente, en forma de cookies, el código cookie y su identificador.
+}
+
+function generarCookieRecordar(array $arrayUsuario)
+{
+    // Creamos un código cookie muy complejo (no necesariamente único).
+    $codigoCookie = generarCadenaAleatoria(32); // Random...
+
+    // TODO guardar código en BD
+    // Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
+
+    // TODO $arrayUsuario["codigoCookie"] = ...
+
+    establecerCookieRecordar($arrayUsuario);
+}
+
+function borrarCookieRecordar(array $arrayUsuario)
+{
+    // TODO Eliminar el código cookie de nuestra BD.
+
+    // TODO Pedir borrar cookie (setcookie con tiempo time() - negativo...)
+}
+
+function generarCadenaAleatoria($longitud): string
+{
+    for ($s = '', $i = 0, $z = strlen($a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')-1; $i != $longitud; $x = rand(0,$z), $s .= $a[$x], $i++);
+    return $s;
+}
 
 // (Esta función no se utiliza en este proyecto pero se deja por si se optimizase el flujo de navegación.)
 // Esta función redirige a otra página y deja de ejecutar el PHP que la llamó:

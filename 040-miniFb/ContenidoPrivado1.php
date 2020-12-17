@@ -2,12 +2,6 @@
 
     require_once "_Varios.php";
 
-    // TODO Hay que comprobar si hay sesión-usuario iniciada.
-    //   - Si la hay, no intervenimos. Dejamos que la pág se cargue.
-    //     (Mostrar info del usuario logueado y tal...)
-    //   - Si NO la hay, redirigimos a SesionInicioMostrarFormulario.php
-    // (Organizar estas comprobaciones en funciones en _Varios.php para evitar copypaste.)
-
     if (!haySesionIniciada()) {
         header("location:SesionInicioMostrarFormulario.php");
 
