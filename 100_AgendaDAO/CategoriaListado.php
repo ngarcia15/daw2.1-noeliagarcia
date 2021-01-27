@@ -1,6 +1,7 @@
 <?php
-    require_once "dao.php";
-    require_once "clases.php";
+    require_once "com/dao.php";
+    require_once "com/clases.php";
+    require_once "com/_Varios.php";
 
 
     $categoria= DAO::CategoriaObtenerTodos();
