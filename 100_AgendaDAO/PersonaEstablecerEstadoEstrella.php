@@ -1,13 +1,9 @@
 <?php
-    require_once "_Varios.php";
+require_once "com/_Varios.php";
+require_once "com/dao.php";
 
-    $conexion = obtenerPdoConexionBD();
+$id = (int)$_REQUEST["id"];
+DAO::personaEstablecerEstadoEstrella($id);
 
-    $id = $_REQUEST["id"];
-
-    $sql = "UPDATE persona SET estrella = (NOT (SELECT estrella FROM persona WHERE id=?)) WHERE id=?";
-    $sentencia = $conexion->prepare($sql);
-    $sentencia->execute([$id, $id]);
-
-    redireccionar("PersonaListado.php");
+redireccionar("PersonaListado.php");
 ?>

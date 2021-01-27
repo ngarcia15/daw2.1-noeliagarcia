@@ -1,41 +1,17 @@
 <?php
-    require_once "_Varios.php";
+require_once "com/_Varios.php";
+require_once "com/dao.php";
 
-    $conexion = obtenerPdoConexionBD();
+if(isset($_REQUEST["soloEstrellas"])) {
+    $posibleClausulaWhere= "WHERE estrella=1";
+} else if(isset($_REQUEST["sinEstrellas"])) {
+    $posibleClausulaWhere= "WHERE estrella=0";
+} else {
+    $posibleClausulaWhere= "";
+}
 
-    session_start(); // Crear post-it vacío, o recuperar el que ya haya  (vacío o con cosas).
-    if (isset($_REQUEST["soloEstrellas"])) {
-        $_SESSION["soloEstrellas"] = true;
-    }
-    if (isset($_REQUEST["todos"])) {
-        unset($_SESSION["soloEstrellas"]);
-    }
+$personas = DAO::personaObtenerTodas($posibleClausulaWhere);
 
-    $posibleClausulaWhere = isset($_SESSION["soloEstrellas"]) ? "WHERE p.estrella=1" : "";
-
-    $sql = "
-               SELECT
-                    p.id     AS pId,
-                    p.nombre AS pNombre,
-                    p.apellidos AS pApellidos,
-                    p.estrella AS pEstrella,
-                    c.id     AS cId,
-                    c.nombre AS cNombre
-                FROM
-                   persona AS p INNER JOIN categoria AS c
-                   ON p.categoriaId = c.id
-                $posibleClausulaWhere
-                ORDER BY p.nombre
-            ";
-
-    $select = $conexion->prepare($sql);
-    $select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
-    $rs = $select->fetchAll();
-
-
-    // INTERFAZ:
-    // $rs
-    // $_SESSION
 ?>
 
 
@@ -56,27 +32,22 @@
 
     <tr>
         <th>Persona</th>
-        <th>Categoría</th>
+        <th>Categoria</th>
     </tr>
 
     <?php
-    foreach ($rs as $fila) { ?>
+    foreach ($personas as $persona) { ?>
         <tr>
-            <td>
-                <?php
-                    $urlImagen = $fila["pEstrella"] ? "img/EstrellaRellena.png" : "img/EstrellaVacia.png";
-                    echo " <a href='PersonaEstablecerEstadoEstrella.php?id=$fila[pId]'><img src='$urlImagen' width='16' height='16'></a> ";
 
-                    echo "<a href='PersonaFicha.php?id=$fila[pId]'>";
-                    echo "$fila[pNombre]";
-                    if ($fila["pApellidos"] != "") {
-                        echo " $fila[pApellidos]";
-                    }
-                    echo "</a>";
-                ?>
-            </td>
-            <td><a href= 'CategoriaFicha.php?id=<?=$fila["cId"]?>'> <?= $fila["cNombre"] ?> </a></td>
-            <td><a href='PersonaEliminar.php?id=<?=$fila["pId"]?>'> (X)                      </a></td>
+            <td><a href="personaFicha.php?id=<?=$persona->getId()?>">
+                    <?php if($persona->getEstrella() == true) { ?>
+                        <?= $persona->getNombre() ?> <a href="personaEstablecerEstadoEstrella.php?id=<?=$persona->getId()?>"><img src="estrella.jpg" width="10" height="10"></a>
+                    <?php } else {?>
+                        <?= $persona->getNombre() ?> <a href="personaEstablecerEstadoEstrella.php?id=<?=$persona->getId()?>"><img src="estrellaVacia.jpg" width="10" height="10"></a>
+                    <?php } ?>
+                </a></td>
+            <td><a href= 'CategoriaFicha.php?id=<?=$persona->getCategoriaId()?>'> <?= DAO::personaCategoria($persona->getCategoriaId()) ?> </a></td>
+            <td><a href='PersonaEliminar.php?id=<?=$persona->getId()?>'> (X)                      </a></td>
         </tr>
     <?php } ?>
 
@@ -84,7 +55,7 @@
 
 <br />
 
-<?php if (!isset($_SESSION["soloEstrellas"])) {?>
+<?php if (!isset($_REQUEST["soloEstrellas"])) {?>
     <a href='PersonaListado.php?soloEstrellas'>Mostrar solo contactos con estrella</a>
 <?php } else { ?>
     <a href='PersonaListado.php?todos'>Mostrar todos los contactos</a>
@@ -93,7 +64,7 @@
 <br />
 <br />
 
-<a href='PersonaFicha.php?id=-1'>Crear entrada</a>
+<a href='PersonaFicha.php?id=-1'>Crear nueva persona</a>
 
 <br />
 <br />
