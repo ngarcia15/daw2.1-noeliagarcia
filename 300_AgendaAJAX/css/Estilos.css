@@ -1,0 +1,22 @@
+#categoriasTabla > div {
+    display: table;
+    width: 250px;
+}
+
+#categoriasTabla > div > div {
+    display: table-row;
+    width: 100%;
+}
+
+#categoriasTabla > div > div > div {
+    display: table-cell;
+    text-align: center;
+    border: 1px solid silver;
+    width: 50%;
+    padding: 1px;
+}
+
+#categoriasTabla > div > div > div > input {
+    width: 100%;
+    border: none;
+}
